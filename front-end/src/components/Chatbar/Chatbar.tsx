@@ -52,8 +52,8 @@ const Chatbar = () => {
                 message.sender.id === currUser.id ? "sent" : "received"
               }`}
             >
+              <img src="/assets/user.png" className="message_image" alt="user" width={40} />
               <span>
-                <strong>{message.sender.name}:</strong>
                 {message.content}
               </span>
             </div>
@@ -71,6 +71,9 @@ const Chatbar = () => {
             className="chat_input_field"
             value={currMessage}
             onChange={(e)=> setCurrMessage(e.target.value)}
+            onKeyPress={(e)=> {
+              if(e.key=="Enter") sendMessage()
+            }}
           />
           <button className="chat_send" onClick={sendMessage}>
             <SendIcon style={{fontSize: '1.6rem'}} />
@@ -78,7 +81,7 @@ const Chatbar = () => {
         </div>
       </div>
       ): (
-        <div className="">
+        <div className="none-selected">
           Select a User/Team to start chatting
         </div>
       )}
