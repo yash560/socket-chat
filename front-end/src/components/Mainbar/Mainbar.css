@@ -1,0 +1,7 @@
+.mainbar_container{
+    flex: 85%;
+}
+
+.mainbar_components{
+    display: flex;
+}

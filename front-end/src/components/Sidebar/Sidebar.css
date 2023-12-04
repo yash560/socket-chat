@@ -1,0 +1,82 @@
+.sidebar_container {
+    flex: 25%;
+    padding: 5px;
+    padding-left: 1rem;
+    border-right: solid 1px #e8e9eb;
+    height: 100vh;
+    overflow-y: auto;
+    transition: margin-left 0.5s;
+    background-color: #f8f8f8;
+  }
+  
+  .sidebar_container::-webkit-scrollbar {
+    width: 12px;
+  }
+  
+  .sidebar_container.open {
+    margin-left: -40%;
+  }
+  
+  .sidebar_heading {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+  
+  .sidebar_toggle_button {
+    cursor: pointer;
+    z-index: 10;
+    position: fixed;
+    background-color: lightskyblue;
+    padding: 5px;
+    width: fit-content;
+    border-radius: 1rem;
+    /* left: 106%; */
+    right: 1rem;
+    top: 1rem;
+    font-weight: 700;
+  }
+
+.sidebar_title{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.sidebar_title_1{
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+.sidebar_input{
+  border: none;
+  padding-left: 10px;
+    border-radius: 10px;
+    height: 2.5rem;
+    width: 100%;
+    margin: auto;
+    margin-top: 1rem;
+}
+.sidebar_content{
+    display: flex;
+    flex-direction: column;
+}
+.sidebar_content_item{
+    display: flex;
+    align-items: center;
+    margin-top: .8rem;
+    padding: 5px;
+    border-bottom: solid 1px gray;
+}
+.sidebar_content_img{
+    height: 3rem;
+    width: 3rem;
+    margin-right: 1rem;
+    border-radius: 50%;
+    outline: solid 1px black;
+}
+.sidebar_content_username{
+    font-size: 1.2rem;
+}
+.teams_title, .users_title{
+  font-size: 1.1rem;
+  font-weight: 600;
+}

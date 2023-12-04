@@ -1,0 +1,23 @@
+.menubar_container{
+    flex: 15%;
+    padding: 5px;
+}
+.menubar_title{
+    margin: 1rem auto 1rem 1rem;
+}
+.menubar_components{
+    display: flex;
+    flex-direction: column;
+}
+.menubar_item{
+    display: flex;
+    align-items: center;
+    height: fit-content;
+    padding: 8px;
+    margin-top: 1rem;
+}
+.menubar_itemname{
+    margin-left: 1rem;
+    font-size: 1rem;
+    font-weight: 400;
+}
