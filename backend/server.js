@@ -4,7 +4,8 @@ const path = require('path');
 const dotenv = require('dotenv');
 const connectDB = require("./config/db");
 const socketIO = require('socket.io');
-const messageRoutes = require('./Routes/messageRoutes')
+const messageRoutes = require('./Routes/messageRoutes');
+const chatRoutes = require('./Routes/chatRoutes');
 // const { chats } = require("./data/data");
 
 const app = express();
@@ -31,6 +32,7 @@ app.get("/api/chat/:id", (req, res) => {
   res.send(singlechat);
 })
 app.use('/api/message',messageRoutes);
+app.use('/api/chat',chatRoutes);
 // Socket.IO configuration
 io.on('connection', (socket) => {
   console.log('A new user has connected');
