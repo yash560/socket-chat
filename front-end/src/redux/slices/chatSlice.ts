@@ -4,6 +4,7 @@ interface User {
     id: number;
     name: string;
     avatar: string;
+    online?: boolean;
 }
 interface Team {
   id: number;
@@ -15,6 +16,7 @@ interface Message{
   sender: User | Team;
   receiver: User | Team;
   content: string;
+  image?: string | null;
 }
 
 interface ChatState {

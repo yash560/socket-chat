@@ -1,107 +1,113 @@
 {
   "hash": "5084694d",
-  "browserHash": "edc2feb4",
+  "browserHash": "d389409e",
   "optimized": {
     "react/jsx-dev-runtime": {
       "src": "../../node_modules/react/jsx-dev-runtime.js",
       "file": "react_jsx-dev-runtime.js",
-      "fileHash": "85395997",
+      "fileHash": "18ac3a59",
       "needsInterop": true
     },
     "react": {
       "src": "../../node_modules/react/index.js",
       "file": "react.js",
-      "fileHash": "eee374c8",
+      "fileHash": "d577fea5",
       "needsInterop": true
     },
     "react-dom/client": {
       "src": "../../node_modules/react-dom/client.js",
       "file": "react-dom_client.js",
-      "fileHash": "3196cd6c",
+      "fileHash": "358f2754",
       "needsInterop": true
     },
     "react-redux": {
       "src": "../../node_modules/react-redux/es/index.js",
       "file": "react-redux.js",
-      "fileHash": "d0d93fd1",
+      "fileHash": "41a0f6ae",
       "needsInterop": false
     },
     "@reduxjs/toolkit": {
       "src": "../../node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js",
       "file": "@reduxjs_toolkit.js",
-      "fileHash": "d84754b9",
+      "fileHash": "0bb87344",
       "needsInterop": false
     },
     "@mui/icons-material/GridView": {
       "src": "../../node_modules/@mui/icons-material/GridView.js",
       "file": "@mui_icons-material_GridView.js",
-      "fileHash": "5145692e",
+      "fileHash": "b5454459",
       "needsInterop": true
     },
     "@mui/icons-material/EditCalendar": {
       "src": "../../node_modules/@mui/icons-material/EditCalendar.js",
       "file": "@mui_icons-material_EditCalendar.js",
-      "fileHash": "b456e035",
+      "fileHash": "3f7cfd3a",
       "needsInterop": true
     },
     "@mui/icons-material/Email": {
       "src": "../../node_modules/@mui/icons-material/Email.js",
       "file": "@mui_icons-material_Email.js",
-      "fileHash": "8e153d41",
+      "fileHash": "895f241f",
       "needsInterop": true
     },
     "@mui/icons-material/Chat": {
       "src": "../../node_modules/@mui/icons-material/Chat.js",
       "file": "@mui_icons-material_Chat.js",
-      "fileHash": "cd54c78d",
+      "fileHash": "796637e5",
       "needsInterop": true
     },
     "@mui/icons-material/Assignment": {
       "src": "../../node_modules/@mui/icons-material/Assignment.js",
       "file": "@mui_icons-material_Assignment.js",
-      "fileHash": "84ec7da1",
+      "fileHash": "e063b731",
       "needsInterop": true
     },
     "@mui/icons-material/WorkOutline": {
       "src": "../../node_modules/@mui/icons-material/WorkOutline.js",
       "file": "@mui_icons-material_WorkOutline.js",
-      "fileHash": "eff6a451",
+      "fileHash": "97071d1d",
       "needsInterop": true
     },
     "@mui/icons-material/FileCopy": {
       "src": "../../node_modules/@mui/icons-material/FileCopy.js",
       "file": "@mui_icons-material_FileCopy.js",
-      "fileHash": "3c04db39",
+      "fileHash": "9d5cb9cf",
       "needsInterop": true
     },
     "@mui/icons-material/Contacts": {
       "src": "../../node_modules/@mui/icons-material/Contacts.js",
       "file": "@mui_icons-material_Contacts.js",
-      "fileHash": "6b098fa9",
+      "fileHash": "0946a4bb",
       "needsInterop": true
     },
     "@mui/icons-material/TextSnippet": {
       "src": "../../node_modules/@mui/icons-material/TextSnippet.js",
       "file": "@mui_icons-material_TextSnippet.js",
-      "fileHash": "6cbec627",
+      "fileHash": "1824f05b",
       "needsInterop": true
     },
     "@mui/icons-material/ShoppingCart": {
       "src": "../../node_modules/@mui/icons-material/ShoppingCart.js",
       "file": "@mui_icons-material_ShoppingCart.js",
-      "fileHash": "fd993be5",
+      "fileHash": "19abcfeb",
       "needsInterop": true
     },
     "@mui/icons-material/Add": {
       "src": "../../node_modules/@mui/icons-material/Add.js",
       "file": "@mui_icons-material_Add.js",
-      "fileHash": "c1a8ee42",
+      "fileHash": "cf79fb03",
       "needsInterop": true
     },
     "@mui/icons-material/Send": {
       "src": "../../node_modules/@mui/icons-material/Send.js",
       "file": "@mui_icons-material_Send.js",
-      "fileHash": "e9e16914",
+      "fileHash": "d259b09a",
+      "needsInterop": true
+    },
+    "@mui/icons-material/Attachment": {
+      "src": "../../node_modules/@mui/icons-material/Attachment.js",
+      "file": "@mui_icons-material_Attachment.js",
+      "fileHash": "a3d86f5c",
       "needsInterop": true
     }
   },
@@ -109,11 +115,11 @@
     "chunk-FBRNPY62": {
       "file": "chunk-FBRNPY62.js"
     },
-    "chunk-XOI5TEC5": {
-      "file": "chunk-XOI5TEC5.js"
+    "chunk-UYA5RJEK": {
+      "file": "chunk-UYA5RJEK.js"
     },
-    "chunk-RYY2S3EM": {
-      "file": "chunk-RYY2S3EM.js"
+    "chunk-IHY7PA36": {
+      "file": "chunk-IHY7PA36.js"
     },
     "chunk-UM3JHGVO": {
       "file": "chunk-UM3JHGVO.js"

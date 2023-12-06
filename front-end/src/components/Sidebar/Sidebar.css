@@ -80,3 +80,22 @@
   font-size: 1.1rem;
   font-weight: 600;
 }
+.userAvatar, .teamAvatar{
+  display: block;
+  margin: 1rem;  
+}
+.user-avatar, .team-avatar{
+  border-radius: 45%;
+  display: block;
+  margin: 1rem;
+}
+.online-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  border-radius: 50%;
+  border: 2px solid white;
+}

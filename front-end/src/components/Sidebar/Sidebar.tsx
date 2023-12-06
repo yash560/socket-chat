@@ -1,59 +1,102 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveChat } from "../../redux/slices/chatSlice";
 import AddIcon from "@mui/icons-material/Add";
 import "./Sidebar.css";
-import { addUser } from "../../redux/slices/userSlice";
-
+import { addUser, setUsers } from "../../redux/slices/userSlice";
+import { addTeam } from "../../redux/slices/teamSlice";
+import axios from "axios";
 
 interface User {
   id: number;
   name: string;
   avatar: string;
+  online?: boolean;
 }
+
 interface Team {
   id: number;
   name: string;
   avatar: string;
 }
 
+
 const Sidebar = () => {
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState("");
-  const [username, setUsername]=useState("");
+  const [username, setUsername] = useState("");
+  const [userAvatar, setUserAvatar]=useState("");
+  const [teamname, setTeamname] = useState("");
+  const [teamAvatar ,setTeamAvatar]=useState("");
   const users = useSelector((state: any) => state.users.users);
+  const teams=useSelector((state: any)=> state.teams.teams);
+
+
+  useEffect(() => {
+    const fetchUsers = async ()=> {
+      try {
+        console.log('still');
+        
+        const response = await axios.get('http://localhost:5000/api/user/all');
+        console.log('fetchUser', response.data);
+        
+        dispatch(setUsers(response.data));
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
+  }, [dispatch]);
 
   const handleUserClick = (user: User) => {
     dispatch(setActiveChat(user));
   };
+
   const handleTeamClick = (team: Team) => {
     dispatch(setActiveChat(team));
   };
 
   const handleUserSubmit = () => {
-    dispatch(addUser({ id: Math.random(), name: username, avatar: "" }));
-    setUsername("");
+    if (username && userAvatar) {
+      dispatch(addUser({ id: Math.random(), name: username, avatar: userAvatar }));
+      setUsername("");
+      setUserAvatar("");
+    } else {
+      alert("Username or user avatar is missing");
+    }
+  };
+  
+  const handleTeamSubmit = () => {
+    if (teamname && teamAvatar) {
+      dispatch(addTeam({ id: Math.random(), name: teamname, avatar: teamAvatar }));
+      setTeamname("");
+      setTeamAvatar("");
+    } else {
+      alert("Teamname or team avatar is missing");
+    }
   };
 
-  const addTeam = () => {};
+  const handleUserAvatar=(e: any)=>{
+    e.preventDefault();
+    const uploadedImage=e.target.files[0];
+    if(!uploadedImage) return;
+    const fileReader=new FileReader();
+    fileReader.readAsDataURL(uploadedImage);
+    fileReader.addEventListener("load", function(){
+      setUserAvatar(this.result as string);
+    })
+  }
+  const handleTeamAvatar=(e: any)=>{
+    e.preventDefault();
+    const uploadedImage=e.target.files[0];
+    if(!uploadedImage) return;
+    const fileReader=new FileReader();
+    fileReader.readAsDataURL(uploadedImage);
+    fileReader.addEventListener("load", function(){
+      setTeamAvatar(this.result as string);
+    })
+  }
 
-  const teams = [
-    {
-      id: 1,
-      name: "Team-1",
-      avatar: "",
-    },
-    {
-      id: 2,
-      name: "Team-2",
-      avatar: "",
-    },
-    {
-      id: 3,
-      name: "Team-3",
-      avatar: "",
-    },
-  ];
 
   return (
     <div
@@ -70,7 +113,12 @@ const Sidebar = () => {
       </div>
       <div className="d-flex justify-content-between align-items-center px-2">
         <h3 className="teams_title">Teams</h3>
-        <div onClick={addTeam}>
+        <button
+          type="button"
+          className="border border-0"
+          data-bs-toggle="modal"
+          data-bs-target="#teamModal"
+        >
           <AddIcon
             style={{
               fontSize: "1.2rem",
@@ -78,10 +126,10 @@ const Sidebar = () => {
               borderRadius: "5px",
             }}
           />
-        </div>
+        </button>
       </div>
 
-      {teams?.map((team) => (
+      {teams?.map((team: Team) => (
         <div
           key={team.id}
           className="card mb-1"
@@ -91,8 +139,8 @@ const Sidebar = () => {
           <div className="row g-0">
             <div className="col-md-3 d-flex justify-content-start align-items-center">
               <img
-                src="/assets/user.png"
-                className="m-2 img-fluid rounded-start"
+                src={`${team.avatar? team.avatar: "/assets/user.png"}`}
+                className="m-2 img-fluid rounded-circle"
                 alt="..."
                 width={40}
               />
@@ -105,13 +153,82 @@ const Sidebar = () => {
           </div>
         </div>
       ))}
+
+      {/* Team Modal */}
+      <div
+        className="modal fade"
+        id="teamModal"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        tabIndex={-1}
+        aria-labelledby="teamModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="teamModalLabel">
+                Add Team
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+
+            <div className="modal-body d-flex flex-column justify-content-center align-items-center">
+            {teamAvatar? (
+              <img src={teamAvatar} className="team-avatar" width={120} />
+            ): (
+              <input
+              type="file"
+              onChange={handleTeamAvatar}
+              accept=".jpg, .jpeg, .png, .svg, .pdf"
+              id="teamAvatar"
+              className="teamAvatar"
+              />
+            )}
+              <label htmlFor="teamName" className="form-label">
+                Team Name:
+              </label>
+              <input
+                type="text"
+                id="teamName"
+                className="form-control"
+                value={teamname}
+                onChange={(e) => setTeamname(e.target.value)}
+              />
+            </div>
+
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleTeamSubmit}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="d-flex justify-content-between align-items-center px-2 mt-4">
         <h3 className="users_title">Users</h3>
         <button
           type="button"
           className="border border-0"
           data-bs-toggle="modal"
-          data-bs-target="#staticBackdrop"
+          data-bs-target="#userModal"
         >
           <AddIcon
             style={{
@@ -122,19 +239,20 @@ const Sidebar = () => {
           />
         </button>
 
+        {/* User Modal */}
         <div
           className="modal fade"
-          id="staticBackdrop"
+          id="userModal"
           data-bs-backdrop="static"
           data-bs-keyboard="false"
           tabIndex={-1}
-          aria-labelledby="staticBackdropLabel"
+          aria-labelledby="userModalLabel"
           aria-hidden="true"
         >
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
-                <h1 className="modal-title fs-5" id="staticBackdropLabel">
+                <h1 className="modal-title fs-5" id="userModalLabel">
                   Add User
                 </h1>
                 <button
@@ -145,7 +263,18 @@ const Sidebar = () => {
                 ></button>
               </div>
 
-              <div className="modal-body">
+              <div className="modal-body d-flex flex-column justify-content-center align-items-center">
+              {userAvatar? (
+              <img src={userAvatar} className="user-avatar" width={120} />
+            ): (
+              <input
+              type="file"
+              onChange={handleUserAvatar}
+              accept=".jpg, .jpeg, .png, .svg, .pdf"
+              id="userAvatar"
+              className="userAvatar"
+              />
+            )}
                 <label htmlFor="userName" className="form-label">
                   User Name:
                 </label>
@@ -166,7 +295,11 @@ const Sidebar = () => {
                 >
                   Close
                 </button>
-                <button type="button" className="btn btn-primary" onClick={handleUserSubmit}>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleUserSubmit}
+                >
                   Submit
                 </button>
               </div>
@@ -183,12 +316,17 @@ const Sidebar = () => {
         >
           <div className="row g-0">
             <div className="col-md-3 d-flex align-items-center">
-              <img
-                src="/assets/user.png"
-                className="m-2 img-fluid rounded-start"
-                alt="..."
-                width={40}
-              />
+            <div className="position-relative">
+                <img
+                  src={`${user.avatar ? user.avatar : "/assets/user.png"}`}
+                  className="m-2 img-fluid rounded-circle"
+                  alt="..."
+                  width={40}
+                />
+                {user?.online && (
+                  <div className="online-indicator"></div>
+                )}
+              </div>
             </div>
             <div className="col-md-8">
               <div className="card-body">

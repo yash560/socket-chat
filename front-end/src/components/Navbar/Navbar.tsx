@@ -1,4 +1,8 @@
+import { useSelector } from "react-redux";
+
+
 function Navbar() {
+  const currentUser = useSelector((state: any) => state.users.currentUser);
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary border border-2 border-bottom border-gray">
       <div className="container-fluid">
@@ -41,7 +45,7 @@ function Navbar() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                {"User name"}
+                {currentUser? currentUser?.name: "User name"}
               </button>
               <ul className="dropdown-menu">
                 <li>

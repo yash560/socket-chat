@@ -301,9 +301,9 @@ var require_hoist_non_react_statics_cjs = __commonJS({
 export {
   _extends,
   init_extends,
+  require_react_is,
   _objectWithoutPropertiesLoose,
   init_objectWithoutPropertiesLoose,
-  require_react_is,
   require_hoist_non_react_statics_cjs
 };
 /*! Bundled license information:
@@ -318,4 +318,4 @@ react-is/cjs/react-is.development.js:
    * LICENSE file in the root directory of this source tree.
    *)
 */
-//# sourceMappingURL=chunk-RYY2S3EM.js.map
+//# sourceMappingURL=chunk-IHY7PA36.js.map
