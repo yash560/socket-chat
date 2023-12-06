@@ -1,58 +1,56 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface User{
-    id: number;
-    name: string;
-    avatar: string;
+
+interface User {
+  id: number;
+  name: string;
+  avatar: string;
+  online?: boolean;
 }
 
-interface UserState{
-    users: User[]
+interface UserState {
+  users: User[];
+  currentUser: any;
 }
 
-const initialState: UserState={
-    users: [
-        {
-          id: 1,
-          name: "User-1",
-          avatar: "",
-        },
-        {
-          id: 2,
-          name: "User-2",
-          avatar: "",
-        },
-        {
-          id: 3,
-          name: "User-3",
-          avatar: "",
-        },
-        {
-          id: 4,
-          name: "User-4",
-          avatar: "",
-        },
-        {
-          id: 5,
-          name: "User-5",
-          avatar: "",
-        },
-        {
-            id: 6,
-            name: "User-6",
-            avatar: "",
-          },
-      ]
-}
-const userSlice=createSlice({
-    name: 'users',
-    initialState: initialState,
-    reducers: {
-        addUser: (state, action: PayloadAction<User>)=>{
-            state.users.push(action.payload);
-        }
-    }
-})
+const storedUserString = localStorage.getItem('currUser');
+const storedUserObject = storedUserString ? JSON.parse(storedUserString) : null;
 
-export const {addUser}=userSlice.actions;
+const initialState: UserState = {
+  users: [
+    {
+      id: 1,
+      name: "User-1",
+      avatar: "",
+    },
+    {
+      id: 2,
+      name: "User-2",
+      avatar: "",
+    },
+    {
+      id: 3,
+      name: "User-3",
+      avatar: "",
+    },
+  ],
+  currentUser: storedUserObject
+};
+const userSlice = createSlice({
+  name: "users",
+  initialState: initialState,
+  reducers: {
+    setUsers: (state, action: PayloadAction<User[]>) => {
+      state.users = action.payload;
+    },
+    addUser: (state, action: PayloadAction<User>) => {
+      state.users.push(action.payload);
+    },
+    setCurrentUser: (state, action: PayloadAction<User | null>) => {
+      state.currentUser = action.payload;
+    },
+  },
+});
+
+export const { setUsers, addUser, setCurrentUser } = userSlice.actions;
 export default userSlice.reducer;

@@ -41,29 +41,30 @@ input:focus{
 }
 .chat_messages{
     padding: 1rem;
+    padding-left: 3rem;
     display: flex;
     flex-direction: column;
     max-height: 74vh;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 .message{
     width: fit-content;
-    padding: 1rem;
+    padding: 5px;
     display: flex;
     flex-direction: column;
     border-radius: 1rem;
     margin: 1rem;
     max-width: 80%;
+    text-align: center;
 }
 .sent{
     background-color: white;
-    /* justify-content: flex-end; */
     align-self: flex-end;
 }
 .received{
     background-color: #304ffd;
     color: white;
-    /* justify-content: flex-start; */
     align-self: flex-start;
 }
 .none-selected{
@@ -77,4 +78,16 @@ input:focus{
 .message_image{
     position: relative;
     right: 4rem;
+}
+.image-preview-container{
+    position: absolute;
+    bottom: 2rem;
+    right: 4rem;
+    background-color: lightblue;
+    padding: 1rem;
+    border-radius: 2rem;
+}
+.image-preview{
+    border-radius: 40%;
+    outline: solid 1px black;
 }

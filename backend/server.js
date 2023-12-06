@@ -4,41 +4,68 @@ const path = require('path');
 const dotenv = require('dotenv');
 const connectDB = require("./config/db");
 const socketIO = require('socket.io');
-const {chats} =require("./data/data");
+const messageRoutes = require('./Routes/messageRoutes');
+const chatRoutes = require('./Routes/chatRoutes');
+const userRoutes=require('./Routes/userRoutes');
+const cors = require('cors');
 
 const app = express();
-dotenv.config({path:"backend/config/.env"});
+
+// cors for allowing fetching from frontend
+// app.use(cors());
+
+app.use(cors({
+  origin: "http://localhost:5173",  // Adjust this to your frontend URL
+  methods: ["GET", "POST"],
+}));
+
+dotenv.config({ path: "config/.env" });
 connectDB();
+
+
 const server = http.createServer(app);
-// const io = socketIO(server);
 
-// app.use(express.static(path.resolve('./public')));
+// Include the Socket.IO configuration with CORS options
+const io = socketIO(server, {
+  cors: {
+    origin: "http://localhost:5173",  // frontend origin
+    methods: ["GET", "POST"]
+  }
+});
 
-// app.get("/",(req,res)=>{
-//     // Use path.join to create an absolute path
-//     return res.sendFile(path.join(__dirname, '/public/index.html'));
-// });
+// Body parsing middleware
+app.use(express.json());
 
-app.get("/api/chats",(req,res)=>{
+
+app.get("/api/chats", (req, res) => {
   res.send(chats)
 })
-app.get("/api/chat/:id",(req,res)=>{
-  const singlechat=chats.find((c)=>c._id === req.params.id);
+app.get("/api/chat/:id", (req, res) => {
+  const singlechat = chats.find((c) => c._id === req.params.id);
   res.send(singlechat);
 })
+app.use('/api/message', messageRoutes);
+app.use('/api/chat', chatRoutes);
+app.use('/api/user', userRoutes);
 // Socket.IO configuration
-// io.on('connection', (socket) => {
-//   console.log('A new user has connected  jhjhhhhhuh');
+io.on('connection', (socket) => {
+  console.log(`User ${socket.id} has connected`);
 
-//   socket.on("user-message",(message)=>{
-//     io.emit("message",message);
-//   });
+  socket.on('user-connect', (user) => {
+    socket.join(user._id);
+    console.log(`User ${user._id} has joined the chat`);
+  });
 
-//   socket.on('disconnect', () => {
-//     console.log('User disconnected');
-//   });
-// });
+  socket.on('user-message', (message) => {
+    console.log('Received user-message:', message);
+    io.to(message?.receiver?._id).emit('new-message', message);
+    console.log('Broadcasted new-message to room:', message?.receiver?._id);
+  });
 
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+});
 // Start the server
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
