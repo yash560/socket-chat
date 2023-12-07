@@ -40,6 +40,36 @@ const createChat = catchAsyncErrors(async (req, res) => {
         }
     }
 });
+// Add user to Group
+const addToGroup = catchAsyncErrors(async (req, res) => {
+    const { chatId, userId } = req.body;
+
+    const isRequesterAdmin = req.user.isAdmin; // Adjust this based on your actual logic
+
+    if (!isRequesterAdmin) {
+        res.status(403); 
+        throw new Error("You don't have permission to add users to the group");
+    }
+
+    const added = await Chat.findByIdAndUpdate(
+        chatId,
+        {
+            $push: { users: userId },
+        },
+        {
+            new: true,
+        }
+    )
+        .populate("users", "-password")
+        .populate("groupAdmin", "-password");
+
+    if (!added) {
+        res.status(404);
+        throw new Error("Chat Not Found");
+    } else {
+        res.json(added);
+    }
+});
 
 // Create or fetch Group Chat
 const createGroupChat = catchAsyncErrors(async (req, res) => {
@@ -75,4 +105,4 @@ const createGroupChat = catchAsyncErrors(async (req, res) => {
 });
 
 
-module.exports = { createChat, createGroupChat };
+module.exports = { createChat, createGroupChat,addToGroup };
