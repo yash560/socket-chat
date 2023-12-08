@@ -1,18 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface User {
+  _id?:any;
     id: number;
     name: string;
     avatar: string;
     online?: boolean;
 }
 interface Team {
+  _id?:any;
   id: number;
   name: string;
   avatar: string;
   users: User[];
 }
 interface Message{
+  _id?:any;
   id: number;
   sender: User | Team;
   receiver: User | Team;

@@ -4,22 +4,26 @@ import { useSelector, useDispatch } from "react-redux";
 import SendIcon from "@mui/icons-material/Send";
 import AttachmentIcon from "@mui/icons-material/Attachment";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { addMessage, deleteMessage, updateMessage } from "../../redux/slices/chatSlice";
+import { addMessage, updateMessage } from "../../redux/slices/chatSlice";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
 
+
 interface User {
+  _id?:any;
   id: number;
   name: string;
   avatar: string;
 }
 interface Team {
+  _id?:any;
   id: number;
   name: string;
   avatar: string;
 }
 
 interface Message {
+  _id?:any;
   id: number;
   sender: User | Team;
   receiver: User | Team;
@@ -45,12 +49,12 @@ const Chatbar = () => {
   const handleDeleteMessage = async () => {
     if (selectedMessage) {
       try {
-        const updatedMsg=await axios.put(
+        await axios.put(
           `http://localhost:5000/api/message/${selectedMessage?._id}/${currUser?._id}`
         );
         dispatch(updateMessage({
-          messageId: updatedMsg?._id,
-          updatedMessage: updatedMsg,
+          messageId: selectedMessage?._id,
+          updatedMessage: {...selectedMessage, isDeleted: true},
         }));
         setSelectedMessage(null);
       } catch (error) {
@@ -67,6 +71,7 @@ const Chatbar = () => {
         receiver: activeChat,
         content: currMessage,
         image: selectedFile ? URL.createObjectURL(selectedFile) : null,
+        isDeleted: false,
       };
       const response = await axios.post(
         "http://localhost:5000/api/message/send",
@@ -74,9 +79,9 @@ const Chatbar = () => {
       );
       console.log("message send=>", response);
 
-      dispatch(addMessage(newMessage));
+      dispatch(addMessage(response.data));
       // Emit the user-message event to the server
-      socket.emit("user-message", newMessage);
+      socket.emit("user-message", response.data);
       setCurrMessage("");
       setSelectedFile(null);
     }
@@ -160,13 +165,13 @@ const Chatbar = () => {
                 className={`message ${
                   message?.sender?._id === currUser?._id ? "sent" : "received"
                 }`}
-                onContextMenu={() => handleLongPress(message)}
+                onClick={() => handleLongPress(message)}
               >
                 <img
                   src={`${
-                    message?.sender?._id === currUser?._id
-                      ? "/assets/user.png"
-                      : activeChat.avatar
+                    // message?.sender?._id === currUser?._id ?
+                      "/assets/user.png"
+                      // : activeChat.avatar
                   }`}
                   className="message_image rounded-circle"
                   alt="user"
@@ -174,7 +179,7 @@ const Chatbar = () => {
                 />
                 {message.isDeleted ? (
                   <span className="deleted-message">
-                    This message is deleted
+                    This message was deleted
                   </span>
                 ) : (
                   <>
@@ -184,7 +189,7 @@ const Chatbar = () => {
                     <span>{message.content}</span>
                   </>
                 )}
-                {selectedMessage && selectedMessage?._id === message._id && (
+                {selectedMessage && selectedMessage?._id === message?._id && message?.sender?._id === currUser?._id &&  (
                   <div className="delete-icon" onClick={handleDeleteMessage}>
                     {/* Add your delete icon here */}
                     <DeleteIcon style={{ color: "red" }} />

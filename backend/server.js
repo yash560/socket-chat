@@ -47,7 +47,7 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/user', userRoutes);
 // Socket.IO configuration
 io.on('connection', (socket) => {
-  console.log(`User ${socket.id} has connected`);
+  // console.log(`User ${socket.id} has connected`);
 
   socket.on('user-connect', (user) => {
     socket.join(user?._id);

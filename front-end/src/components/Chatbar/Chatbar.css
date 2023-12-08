@@ -91,3 +91,6 @@ input:focus{
     border-radius: 40%;
     outline: solid 1px black;
 }
+.deleted-message{
+    font-style: italic;
+}

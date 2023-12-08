@@ -10,12 +10,14 @@ interface TeamModalProps {
   users: any[];
 }
 interface User {
+  _id?:any;
     id: number;
     name: string;
     avatar: string;
     online?: boolean;
 }
 interface Team{
+  _id?:any;
     id: number;
     name: string;
     avatar: string;
