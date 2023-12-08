@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import { setCurrentUser } from '../redux/slices/userSlice';
 import { useDispatch } from 'react-redux';
 
@@ -29,7 +29,7 @@ function Login() {
 
   return (
     <div>
-        <div>
+        <div className='authpage'>
         <h2>Login</h2>
         <input
           type="text"
@@ -44,6 +44,9 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button onClick={handleLogin}>Login</button>
+        <div>
+          <Link to='/signup'>Not registered? Signup now</Link>
+        </div>
       </div>
     </div>
   )

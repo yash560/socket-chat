@@ -77,7 +77,7 @@ input:focus{
 }
 .message_image{
     position: relative;
-    right: 4rem;
+    right: 3.5rem;
 }
 .image-preview-container{
     position: absolute;

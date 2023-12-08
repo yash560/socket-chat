@@ -11,14 +11,18 @@ const App = () => {
     <div>
       <BrowserRouter>
       <Routes>
-      <Route path="/*" element={loggedIn ? <Navigate to="/" /> : <Signup />} />
+        <Route path='/signup' element={<Signup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={
-          <div className="app">
-          <Menubar />
-          <Mainbar />
-        </div>
-        } />
+        {loggedIn ? (
+            <Route path="/" element={
+              <div className="app">
+                <Menubar />
+                <Mainbar />
+              </div>
+            } />
+          ) : (
+            <Route path="/*" element={<Navigate to="/signup" />} />
+          )}
       </Routes>
       </BrowserRouter>
       

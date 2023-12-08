@@ -1,11 +1,12 @@
 import "./Chatbar.css";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import AddIcon from "@mui/icons-material/Add";
 import SendIcon from "@mui/icons-material/Send";
 import AttachmentIcon from "@mui/icons-material/Attachment";
-import { addMessage } from "../../redux/slices/chatSlice";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { addMessage, deleteMessage, updateMessage } from "../../redux/slices/chatSlice";
 import socketIOClient from "socket.io-client";
+import axios from "axios";
 
 interface User {
   id: number;
@@ -24,20 +25,41 @@ interface Message {
   receiver: User | Team;
   content: string;
   image?: string | null;
+  isDeleted?: boolean;
 }
 
 const Chatbar = () => {
   const socket = socketIOClient("http://localhost:5000"); // backend URL
   const currUser = useSelector((state: any) => state.users.currentUser);
-  console.log('currUser=>', currUser);
-
   const dispatch = useDispatch();
   const activeChat = useSelector((state: any) => state.chat.activeChat);
   const messages = useSelector((state: any) => state.chat.messages);
   const [currMessage, setCurrMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 
-  const sendMessage = () => {
+  const handleLongPress = (message: Message) => {
+    setSelectedMessage(message);
+  };
+
+  const handleDeleteMessage = async () => {
+    if (selectedMessage) {
+      try {
+        const updatedMsg=await axios.put(
+          `http://localhost:5000/api/message/${selectedMessage?._id}/${currUser?._id}`
+        );
+        dispatch(updateMessage({
+          messageId: updatedMsg?._id,
+          updatedMessage: updatedMsg,
+        }));
+        setSelectedMessage(null);
+      } catch (error) {
+        console.error("Error deleting message:", error);
+      }
+    }
+  };
+
+  const sendMessage = async () => {
     if (activeChat) {
       const newMessage = {
         id: messages.length + 1,
@@ -46,6 +68,11 @@ const Chatbar = () => {
         content: currMessage,
         image: selectedFile ? URL.createObjectURL(selectedFile) : null,
       };
+      const response = await axios.post(
+        "http://localhost:5000/api/message/send",
+        newMessage
+      );
+      console.log("message send=>", response);
 
       dispatch(addMessage(newMessage));
       // Emit the user-message event to the server
@@ -57,11 +84,29 @@ const Chatbar = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
-
     if (file) {
       setSelectedFile(file);
     }
   };
+
+  useEffect(() => {
+    if (activeChat) {
+      // Make an API request to fetch past messages between currUser and activeChat
+      axios
+        .get(
+          `http://localhost:5000/api/message/${currUser._id}/${activeChat._id}`
+        )
+        .then((response) => {
+          // Dispatch an action to add the fetched messages to the Redux state
+          response.data.forEach((message: Message) => {
+            dispatch(addMessage(message));
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching past messages:", error);
+        });
+    }
+  }, [dispatch, activeChat, currUser?._id, activeChat?._id]);
 
   useEffect(() => {
     socket.emit("user-connect", currUser);
@@ -73,11 +118,11 @@ const Chatbar = () => {
   }, [currUser, socket]);
 
   useEffect(() => {
-    socket.emit('user-message', {
+    socket.emit("user-message", {
       message: "A new client has landed on the chat page.",
     });
-    socket.on('new-message', (message: Message) => {
-      console.log('Received new-message:', message);
+    socket.on("new-message", (message: Message) => {
+      console.log("Received new-message:", message);
       if (
         (message.sender.id === currUser.id &&
           message?.receiver?.id === activeChat?.id) ||
@@ -90,7 +135,7 @@ const Chatbar = () => {
     return () => {
       socket.disconnect();
     };
-  }, [dispatch, socket, activeChat, currUser.id]);
+  }, [dispatch, socket, activeChat, currUser?._id]);
 
   return (
     <div className="chatbar_container">
@@ -111,14 +156,15 @@ const Chatbar = () => {
           <div className="chat_messages">
             {messages?.map((message: any) => (
               <div
-                key={message.id}
+                key={message._id}
                 className={`message ${
                   message?.sender?._id === currUser?._id ? "sent" : "received"
                 }`}
+                onContextMenu={() => handleLongPress(message)}
               >
                 <img
                   src={`${
-                    message?.sender?.id === currUser?.id
+                    message?.sender?._id === currUser?._id
                       ? "/assets/user.png"
                       : activeChat.avatar
                   }`}
@@ -126,10 +172,24 @@ const Chatbar = () => {
                   alt="user"
                   width={40}
                 />
-                {message.image && (
-                  <img src={message.image} alt="message" width={180} />
+                {message.isDeleted ? (
+                  <span className="deleted-message">
+                    This message is deleted
+                  </span>
+                ) : (
+                  <>
+                    {message.image && (
+                      <img src={message.image} alt="message" width={180} />
+                    )}
+                    <span>{message.content}</span>
+                  </>
                 )}
-                <span>{message.content}</span>
+                {selectedMessage && selectedMessage?._id === message._id && (
+                  <div className="delete-icon" onClick={handleDeleteMessage}>
+                    {/* Add your delete icon here */}
+                    <DeleteIcon style={{ color: "red" }} />
+                  </div>
+                )}
               </div>
             ))}
           </div>

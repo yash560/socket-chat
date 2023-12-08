@@ -16,7 +16,6 @@ const app = express();
 
 app.use(cors({
   origin: "http://localhost:5173",  // Adjust this to your frontend URL
-  methods: ["GET", "POST"],
 }));
 
 dotenv.config({ path: "config/.env" });
@@ -28,8 +27,7 @@ const server = http.createServer(app);
 // Include the Socket.IO configuration with CORS options
 const io = socketIO(server, {
   cors: {
-    origin: "http://localhost:5173",  // frontend origin
-    methods: ["GET", "POST"]
+    origin: "http://localhost:5173",
   }
 });
 
@@ -52,8 +50,8 @@ io.on('connection', (socket) => {
   console.log(`User ${socket.id} has connected`);
 
   socket.on('user-connect', (user) => {
-    socket.join(user._id);
-    console.log(`User ${user._id} has joined the chat`);
+    socket.join(user?._id);
+    console.log(`User ${user?._id} has joined the chat`);
   });
 
   socket.on('user-message', (message) => {
@@ -66,6 +64,7 @@ io.on('connection', (socket) => {
     console.log('User disconnected');
   });
 });
+
 // Start the server
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {

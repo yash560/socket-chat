@@ -1,7 +1,13 @@
 import { useSelector } from "react-redux";
-
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
+  const nav=useNavigate();
+  const handleLogout=(e: any)=>{
+    e.preventDefault();
+    localStorage.removeItem('currUser');
+    nav('/login');
+  }
   const currentUser = useSelector((state: any) => state.users.currentUser);
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary border border-2 border-bottom border-gray">
@@ -49,9 +55,9 @@ function Navbar() {
               </button>
               <ul className="dropdown-menu">
                 <li>
-                  <a className="dropdown-item" href="#">
-                    Action
-                  </a>
+                  <button className="dropdown-item" onClick={handleLogout}>
+                    Logout
+                  </button>
                 </li>
                 <li>
                   <a className="dropdown-item" href="#">

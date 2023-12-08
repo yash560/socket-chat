@@ -10,6 +10,7 @@ interface Team {
   id: number;
   name: string;
   avatar: string;
+  users: User[];
 }
 interface Message{
   id: number;
@@ -17,6 +18,7 @@ interface Message{
   receiver: User | Team;
   content: string;
   image?: string | null;
+  isDeleted?: boolean;
 }
 
 interface ChatState {
@@ -35,12 +37,23 @@ const chatSlice = createSlice({
   reducers: {
     setActiveChat: (state, action: PayloadAction<User | Team | null>) => {
       state.activeChat = action.payload;
+      state.messages=[];
     },
     addMessage: (state, action: PayloadAction<Message>)=>{
       state.messages.push(action.payload);
-    }
+    },
+    updateMessage: (state, action) => {
+      const { messageId, updatedMessage } = action.payload;
+      const index = state.messages.findIndex(
+        (message: Message) => message?._id === messageId
+      );
+
+      if (index !== -1) {
+        state.messages[index] = updatedMessage;
+      }
+    },
   },
 });
 
-export const { setActiveChat, addMessage } = chatSlice.actions;
+export const { setActiveChat, addMessage, updateMessage } = chatSlice.actions;
 export default chatSlice.reducer;

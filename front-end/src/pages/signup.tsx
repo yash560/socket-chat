@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 
 
 function Signup() {
@@ -25,7 +25,7 @@ function Signup() {
 
   return (
     <div>
-      <div>
+      <div className='authpage'>
         <h2>Signup</h2>
         <input
           type="text"
@@ -46,6 +46,9 @@ function Signup() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button onClick={handleSignup}>Signup</button>
+        <div>
+          <Link to='/login'>Already have an account? Login</Link>
+        </div>
       </div>
     </div>
   );

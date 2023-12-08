@@ -2,10 +2,15 @@ const mongoose = require("mongoose");
 
 const messageSchema = mongoose.Schema(
   {
-    sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    receiver: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    sender: { type: Object, ref: "User" },
+    receiver: { type: Object, ref: "User" },
     content: { type: String, trim: true },
+    image: {type: String},
     chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
     isRead: [],
   },
   { timestamps: true }

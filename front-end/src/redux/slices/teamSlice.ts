@@ -1,9 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+interface User {
+    id: number;
+    name: string;
+    avatar: string;
+    online?: boolean;
+}
 interface Team{
-    id: number,
-    name: string,
-    avatar: string,
+    id: number;
+    name: string;
+    avatar: string;
+    users: User[];
 }
 
 interface TeamState{
@@ -15,11 +22,13 @@ const initialState: TeamState={
           id: 1,
           name: "Team-1",
           avatar: "",
+          users: []
         },
         {
           id: 2,
           name: "Team-2",
           avatar: "",
+          users: []
         },
       ]
 }
