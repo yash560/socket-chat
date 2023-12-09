@@ -40,6 +40,7 @@ const createChat = catchAsyncErrors(async (req, res) => {
         }
     }
 });
+
 // Add user to Group
 const addToGroup = catchAsyncErrors(async (req, res) => {
     const { chatId, userId } = req.body;

@@ -1,7 +1,6 @@
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const Message = require("../models/messageModel");
-// const User = require("../models/userModel");
-const Chat = require("../models/chatModel");
+
 
 const sendMessage = catchAsyncErrors(async (req, res) => {
 
@@ -33,7 +32,6 @@ const allChatMessages = catchAsyncErrors(async (req, res) => {
   try {
     const messages = await Message.find({ chat: req.params.id });
     if (!messages) {
-      console.log("Enter a valid chat_id");
       return res.sendStatus(400);
     }
     res.json(messages);
@@ -75,4 +73,4 @@ const deleteMessage = catchAsyncErrors(async (req, res) => {
 });
 
 
-module.exports = { sendMessage, allChatMessages, deleteMessage };
+module.exports = { sendMessage, allChatMessages, deleteMessage  };

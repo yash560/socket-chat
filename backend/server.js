@@ -6,14 +6,13 @@ const connectDB = require("./config/db");
 const socketIO = require('socket.io');
 const messageRoutes = require('./Routes/messageRoutes');
 const chatRoutes = require('./Routes/chatRoutes');
-const userRoutes=require('./Routes/userRoutes');
+const userRoutes = require('./Routes/userRoutes');
+const taskRoutes = require('./Routes/taskRoutes');
 const cors = require('cors');
 
 const app = express();
 
 // cors for allowing fetching from frontend
-// app.use(cors());
-
 app.use(cors({
   origin: "http://localhost:5173",  // Adjust this to your frontend URL
   methods: ["GET", "POST"],
@@ -44,9 +43,12 @@ app.get("/api/chat/:id", (req, res) => {
   const singlechat = chats.find((c) => c._id === req.params.id);
   res.send(singlechat);
 })
+
 app.use('/api/message', messageRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/tasks', taskRoutes);
+
 // Socket.IO configuration
 io.on('connection', (socket) => {
   console.log(`User ${socket.id} has connected`);
@@ -66,6 +68,7 @@ io.on('connection', (socket) => {
     console.log('User disconnected');
   });
 });
+
 // Start the server
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
