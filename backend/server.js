@@ -7,6 +7,7 @@ const socketIO = require('socket.io');
 const messageRoutes = require('./Routes/messageRoutes');
 const chatRoutes = require('./Routes/chatRoutes');
 const userRoutes=require('./Routes/userRoutes');
+const officeRoutes=require('./Routes/officeRoutes');
 const cors = require('cors');
 
 const app = express();
@@ -45,6 +46,8 @@ app.get("/api/chat/:id", (req, res) => {
 app.use('/api/message', messageRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/office', officeRoutes);
+
 // Socket.IO configuration
 io.on('connection', (socket) => {
   // console.log(`User ${socket.id} has connected`);
